@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
+import TrashMenu from './TrashMenu'
+import TrashModal from './TrashModal'
 
 const Header = styled.header`
   background: var(--color-secondary-100);
@@ -13,11 +15,13 @@ const Brand = styled.h1`
   color: var(--color-black-200);
   font-size: x-large;
   margin: 0;
+  justify-content: space-between;
 
   a {
     background: var(--color-secondary-200);
     border-radius: 6px;
     padding: 0.5rem 1rem;
+    cursor: pointer;
 
     &:focus {
       outline-color: var(--color-brand);
@@ -37,6 +41,16 @@ const Container = styled.div`
 `
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isOpen, setOpen] = useState<boolean>(false)
+
+  const handleOpenModal = useCallback(() => {
+    setOpen(true)
+  }, [])
+
+  const handleCloseModal = useCallback(() => {
+    setOpen(false)
+  }, [])
+
   return (
     <div>
       <Header>
@@ -45,6 +59,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Link href='/'>
               <a>🍑 PeachyTask</a>
             </Link>
+            <TrashMenu onClick={handleOpenModal} />
           </Brand>
         </Container>
       </Header>
@@ -54,6 +69,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <Main>{children}</Main>
         </Container>
       </main>
+      <TrashModal isOpen={isOpen} onClose={handleCloseModal} />
     </div>
   )
 }

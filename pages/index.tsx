@@ -1,12 +1,9 @@
-import { Task } from '@prisma/client'
-import axios from 'axios'
 import CreateTaskForm from 'components/CreateTask'
 import NoTasks from 'components/NoTasks'
 import TaskItem from 'components/TaskItem'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useGetDoneTasks, useGetTasks } from 'queries'
-import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const TaskList = styled.div`
