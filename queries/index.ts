@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 const QUERY_KEY_TASKS = 'tasks'
+const QUERY_KEY_DONE_TASKS = 'done_tasks'
 
 export function useGetTasks() {
   const getTasks = async () => {
@@ -11,6 +12,7 @@ export function useGetTasks() {
   }
   return useQuery([QUERY_KEY_TASKS, 'incomplete'], getTasks)
 }
+
 export function useCreateTask() {
   const queryClient = useQueryClient()
   const createTask = async (newTask: Prisma.TaskCreateInput) => {
@@ -21,6 +23,7 @@ export function useCreateTask() {
     onSuccess: () => queryClient.invalidateQueries([QUERY_KEY_TASKS])
   })
 }
+
 export function useUpdateTask({ id }: { id: Task['id'] }) {
   const queryClient = useQueryClient()
   const updateTask = async (newTask: Prisma.TaskUpdateInput) => {
@@ -28,6 +31,17 @@ export function useUpdateTask({ id }: { id: Task['id'] }) {
     return data
   }
   return useMutation(updateTask, {
-    onSuccess: () => queryClient.invalidateQueries([QUERY_KEY_TASKS])
+    onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEY_TASKS])
+      queryClient.invalidateQueries([QUERY_KEY_DONE_TASKS])
+    }
   })
+}
+
+export function useGetDoneTasks() {
+  const getDoneTasks = async () => {
+    const { data } = await axios.get<Task[]>(`/api/tasks/done`)
+    return data
+  }
+  return useQuery([QUERY_KEY_DONE_TASKS, 'incomplete'], getDoneTasks)
 }
