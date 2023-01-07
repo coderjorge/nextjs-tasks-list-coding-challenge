@@ -1,0 +1,38 @@
+html {
+  --color-brand: #f4845f;
+  --color-secondary-100: #414288;
+  --color-secondary-200: #2b2c5a;
+  --color-black-100: #ffffff;
+  --color-black-200: #f7f7f7;
+  --color-black-300: #b3b3b3;
+  --color-black-400: #090909;
+  --color-success: #abff4f;
+  --color-danger: #6e0e0a;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body {
+  background: var(--color-black-200);
+  color: var(--color-black-400);
+}
+
+h1,
+h2 {
+  font-weight: normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
