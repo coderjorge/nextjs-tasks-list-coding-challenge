@@ -5,7 +5,7 @@ import NoTasks from 'components/NoTasks'
 import TaskItem from 'components/TaskItem'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useGetTasks } from 'queries'
+import { useGetDoneTasks, useGetTasks } from 'queries'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
@@ -25,16 +25,8 @@ const Title = styled.h1`
 `
 
 const Home: NextPage = () => {
-  const [doneTasks, setDoneTasks] = useState<Task[]>([])
   const { data: tasks } = useGetTasks()
-
-  useEffect(() => {
-    const updateCompletedTasks = async () => {
-      const { data } = await axios.get<Task[]>(`/api/tasks/done`)
-      setDoneTasks(data)
-    }
-    updateCompletedTasks()
-  }, [])
+  const { data: doneTasks } = useGetDoneTasks()
 
   return (
     <>
@@ -58,7 +50,7 @@ const Home: NextPage = () => {
       <section>
         <Title>Done</Title>
         <TaskList>
-          {doneTasks.length > 0 ? (
+          {doneTasks?.length && doneTasks.length > 0 ? (
             doneTasks.map(task => <TaskItem key={task.id} {...task} />)
           ) : (
             <NoTasks emoji='😔' text="There's nothing here..." />
